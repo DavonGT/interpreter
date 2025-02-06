@@ -6,7 +6,6 @@ class Parser:
         self.advance()
 
     def advance(self):
-        """Move to the next token."""
         if self.index < len(self.tokens):
             self.current_token = self.tokens[self.index]
             self.index += 1
@@ -14,20 +13,17 @@ class Parser:
             self.current_token = ("EOF", "")
 
     def peek(self, n):
-        """Look ahead n tokens."""
         if self.index + n - 1 < len(self.tokens):
             return self.tokens[self.index + n - 1]
         return ("EOF", "")
 
     def eat(self, token_type):
-        """Consume the current token if it matches the token_type."""
         if self.current_token[0] == token_type:
             self.advance()
         else:
             raise SyntaxError(f"Expected {token_type}, got {self.current_token}")
 
     def program(self):
-        """Parse the entire program."""
         statements = []
         while self.current_token[0] not in ["EOF"]:
             statements.extend(self.statement())
@@ -36,7 +32,6 @@ class Parser:
     def statement(self):
         statements = []
         while self.current_token[0] not in ["NEWLINE", "DEDENT", "EOF"]:
-            print(f"Current token in statement: {self.current_token}")  # Debugging line
 
             # Handle assignment (IDENTIFIER followed by '=')
             if self.current_token[0] == "IDENTIFIER":
@@ -73,7 +68,6 @@ class Parser:
         return statements
 
     def assignment(self):
-        """Parse an assignment statement."""
         var_name = self.current_token[1]
         self.eat("IDENTIFIER")  # Consume identifier token
         self.eat("ASSIGN")  # Consume '='
@@ -81,13 +75,11 @@ class Parser:
         return ("ASSIGN", var_name, expr)
 
     def return_stmt(self):
-        """Parse a return statement."""
         self.eat("RETURN")  # Consume 'return'
         value = self.expression()  # Parse the return value expression
         return ("RETURN", value)
 
     def if_stmt(self):
-        """Parse an if statement."""
         self.eat("IF")  # Consume 'if'
         condition = self.expression()
         self.eat("COLON")  # Consume ':'
@@ -105,7 +97,6 @@ class Parser:
         return ("IF", condition, true_branch, false_branch)
 
     def for_stmt(self):
-        """Parse a for loop statement."""
         self.eat("FOR")  # Consume 'for'
         var_name = self.current_token[1]
         self.eat("IDENTIFIER")  # Consume identifier token
@@ -118,7 +109,6 @@ class Parser:
         return ("FOR", var_name, start, end, body)
 
     def while_stmt(self):
-        """Parse a while loop statement."""
         self.eat("WHILE")  # Consume 'while'
         condition = self.expression()
         self.eat("COLON")  # Consume ':'
@@ -126,7 +116,6 @@ class Parser:
         return ("WHILE", condition, body)
 
     def function_def(self):
-        """Parse a function definition."""
         self.eat("DEF")  # Consume 'def'
         func_name = self.current_token[1]
         self.eat("IDENTIFIER")  # Consume function name
@@ -142,7 +131,6 @@ class Parser:
         return ("DEF", func_name, params, body)
 
     def parameters(self):
-        """Parse function parameters."""
         params = []
         if self.current_token[0] != "RPAREN":
             while self.current_token[0] == "IDENTIFIER":
@@ -153,7 +141,6 @@ class Parser:
         return params
 
     def block(self):
-        """Parse a block of statements (for if, for, while, or function)."""
         self.eat("INDENT")  # Consume indentation token
         statements = []
         while self.current_token[0] not in ["DEDENT", "EOF"]:
@@ -162,7 +149,6 @@ class Parser:
         return statements
 
     def function_call(self):
-        """Parse a function call."""
         func_name = self.current_token[1]  # The function name is the identifier
         self.eat("IDENTIFIER")  # Consume the identifier token
         self.eat("LPAREN")  # Consume '('
@@ -171,8 +157,6 @@ class Parser:
         return ("CALL", func_name, args)
 
     def arguments(self):
-        """Parse the arguments for a function call."""
-        args = []
         if self.current_token[0] != "RPAREN":
             while True:
                 args.append(self.expression())  # Parse an argument
@@ -183,15 +167,12 @@ class Parser:
         return args
 
     def expression(self):
-        """Parse an expression.""" 
         return self.term()
 
     def term(self):
-        """Parse a term (currently only factors)."""
         return self.factor()
 
     def factor(self):
-        """Parse a factor, like numbers or identifiers."""
         if self.current_token[0] == "NUMBER":
             value = self.current_token[1]
             self.eat("NUMBER")
