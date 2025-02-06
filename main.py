@@ -2,7 +2,7 @@
 import sys
 from lexer import Lexer
 from parser import Parser
-
+#
 def main():
     code_file = sys.argv[1]
     with open(code_file, "r") as file:
