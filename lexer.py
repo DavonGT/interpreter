@@ -1,5 +1,5 @@
 import re
-
+#
 TOKEN_SPEC = [
     ("NUMBER",      r"\d+"),
     ("IDENTIFIER",  r"[a-zA-Z_]\w*"),
