@@ -1,13 +1,7 @@
 # Interpreter
 
 ## Introduction
-This repository contains an interpreter for a custom programming language. The interpreter reads (and executes) the code written in this language.
-
-## Features
-- Syntax parsing
-- Error handling
-- Variable management
-- Control flow support
+This repository contains an interpreter for a custom programming language(dl "davonLang"). The interpreter reads (and executes) the code written in this language.
 
 ## Installation
 To install the interpreter, clone the repository and navigate to the project directory:
