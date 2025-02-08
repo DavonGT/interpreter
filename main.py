@@ -5,6 +5,9 @@ from parser import Parser
 #
 def main():
     code_file = sys.argv[1]
+    if code_file.split(".")[-1] != 'dl':
+        print("Your file is not supported.")
+        quit()
     with open(code_file, "r") as file:
         code = file.read()
 
@@ -18,5 +21,4 @@ def main():
     except SyntaxError as e:
         print(f"Syntax Error: {e}")
 
-main()
-for i in range 
+main() 
